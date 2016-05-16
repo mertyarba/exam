@@ -5,19 +5,14 @@
 	require_once("header.php");
 	
 	
-	//******************************
-	//******** SAVE TO DB **********
-	//******************************
-		
-		
-		//connection with username and password
-		//access username from config
-		//echo $db_username;
-		
-		//1 server name
-		//2 username
-		//3 password
-		//4 database
+	
+	//*****************
+	//TO validation
+	//*****************
+	if (isset($_GET["insect"])){//if there is "?insect=" in the message
+		if (empty($_GET["insect"])){//if it is empty
+		echo "Define insect! <br>";//yes it is empty
+		}else{
 		
 		$mysql = new mysqli("localhost", $db_username, $db_password, "webpr2016_mertyarba");
 		
@@ -40,26 +35,17 @@
 		}else{
 			echo $stmt->error;
 		}
-	
-	//*****************
-	//TO validation
-	//*****************
-	if (isset($_GET["insect"])){//if there is "?insect=" in the message
-		if (empty($_GET["insect"])){//if it is empty
-		echo "Define insect! <br>";//yes it is empty
-		}else{
-			echo "Insect: ".$_GET["insect"]."<br>";//no it is not empty
 		}
 	}
 	
 	//check if there is variable in the URL
-	if (isset ($_GET["description"])){
+	if (isset($_GET["description"])){
 		
 		//only if there is message in the URL
 		//echo "there is message";
 		
 		// if it is empty
-		if (empty ($_GET["description"])){
+		if (empty($_GET["description"])){
 			//it is empty
 			echo "Please describe the insect! <br>";
 		}else{
@@ -68,7 +54,31 @@
 		}
 	}else{
 		
+		$mysql = new mysqli("localhost", $db_username, $db_password, "webpr2016_mertyarba");
+		
+		$stmt = $mysql->prepare("INSERT INTO exam(insect, description)VALUES (?, ?)");
+		
+		//We are replacing question marks with values
+		//s - string, date or smth that is based on characters and numbers
+		//i - integer, number
+		//d - decimal, float
+		
+		//for each question mark its type with one letter
+		$stmt->bind_param("ss", $_GET["insect"], $_GET["description"]);
+		
+		//echo error
+		echo $mysql->error;
+		
+		//save
+		if ($stmt->execute()){
+			echo "saved successfully";
+		}else{
+			echo $stmt->error;
+		}
 	}
+			
+	
+	
 	?>
 	
 	
