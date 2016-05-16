@@ -14,6 +14,7 @@
 	//IF THERE IS "?DELETE=ROW_ID" in the url
 	if (isset ($_GET["delete"])){
 		
+		
 		echo "Deleting insect with id: ".$_GET["delete"];
 		
 		$stmt=$mysql->prepare("UPDATE exam SET deleted=NOW() WHERE id = ?");
